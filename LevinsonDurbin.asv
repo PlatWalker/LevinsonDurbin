@@ -16,17 +16,15 @@ end
 
 %% First step for i = 1
 
-a = zeros(10,10);
+a = zeros(10 + matInd,10)
 
-s(0 + matInd) = p(0 + matInd); 
+s(0 + matInd) = p(1); 
 
-k(1) = p(1 + matInd)/p(0 + matInd);
-a(1,1) = k(1); % a vector dont have 0 index in math notation so mathInd is not needed
-s(1 + matInd) = (1-k(1)^2)*s(0 + matInd);
+k(0 + matInd) = p(1+matInd)/p(0+matInd);
+a = k; 
+s(1 + matInd) = (1-k^2)*s(0 + matInd);
 
 %% Recursion steps
-
-x = 0;
 
 for i = 2:10
 
@@ -36,16 +34,14 @@ for i = 2:10
         
     end
     
-    k(i) = p(i + matInd) - x / s(i - 1 + matInd);
-    a(i,i) = k(i);
+    k(i + matInd) = p(i + matInd) - x / s(i - 1 + matInd);
+    a(i + matInd) = k(i + matInd);
     
     for j = 1:i-1
         
-        a(j,i)= a(j,i-1) - k(i)*a(i-j,i-1);
+        a(j)= a(j) - k(i + matInd)*a(i-j);
         
     end
-    
-    s(i + matInd) = (1-k(i)^2)*s(i - 1 + matInd);
     
 end
 
