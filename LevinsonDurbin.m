@@ -10,10 +10,9 @@ p = zeros(10 + matInd,1);
 
 for i = 0:10
     for t = i+1:N
-        p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i)/256;
+        p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i);
     end
 end
-
 %% First step for i = 1
 
 a = zeros(10,10);
@@ -26,10 +25,9 @@ s(1 + matInd) = (1-k(1)^2)*s(0 + matInd);
 
 %% Recursion steps
 
-x = 0;
-
 for i = 2:10
-
+    
+    x = 0;
     for j = 1:i-1
         
         x = x + a(j,i-1) * p(i-j + matInd);

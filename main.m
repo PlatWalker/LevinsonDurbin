@@ -10,8 +10,8 @@ THICKseg = MakeSegments(samples);
 
 for i = 1:1 %size(THICKseg,2)
     
-    seg = FlattenSegments(THICKseg(:,i));
-    [a,p] = LevinsonDurbin( seg(:,i) );
+    seg = FlattenSegments( THICKseg(:,i) );
+    [ a, p ] = LevinsonDurbin( seg(:,i) );
     e = ErrorVector( a, seg(:,i) );
     
 end
