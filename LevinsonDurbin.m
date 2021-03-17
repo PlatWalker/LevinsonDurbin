@@ -9,10 +9,8 @@ matInd = 1; % matlab indexing starts from 1... math starts indexing from 0.
 p = zeros(10 + matInd,1);
 
 for i = 0:10
-    check = 0;
     for t = i+1:N
-        p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i);
-        check = check + seg(t)*seg(t-i);
+        p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i)/256;
     end
 end
 
@@ -34,20 +32,20 @@ for i = 2:10
 
     for j = 1:i-1
         
-        x = x + a(j,i-1)*p(i-j + matInd);
+        x = x + a(j,i-1) * p(i-j + matInd);
         
     end
     
-    k(i) = p(i + matInd) - x / s(i - 1 + matInd);
+    k(i) = (p(i + matInd) - x) / s(i - 1 + matInd);
     a(i,i) = k(i);
     
     for j = 1:i-1
         
-        a(j,i)= a(j,i-1) - k(i)*a(i-j,i-1);
+        a(j,i)= a(j,i-1) - k(i) * a(i-j,i-1);
         
     end
     
-    s(i + matInd) = (1-k(i)^2)*s(i - 1 + matInd);
+    s(i + matInd) = (1-k(i)^2) * s(i - 1 + matInd);
     
 end
 
