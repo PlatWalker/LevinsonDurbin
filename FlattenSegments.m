@@ -10,6 +10,7 @@ for i = 1:size(seg,1)
     end
 end
 
+%%
 Zeros = zeros(10,size(flatSeg,2));
 
 flatSeg = [Zeros;flatSeg;Zeros];

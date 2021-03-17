@@ -1,4 +1,4 @@
-function [ a ] = LevinsonDurbin( seg )
+function [ a , p ] = LevinsonDurbin( seg )
 
 N = 256;
 matInd = 1; % matlab indexing starts from 1... math starts indexing from 0. 
@@ -9,8 +9,10 @@ matInd = 1; % matlab indexing starts from 1... math starts indexing from 0.
 p = zeros(10 + matInd,1);
 
 for i = 0:10
+    check = 0;
     for t = i+1:N
         p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i);
+        check = check + seg(t)*seg(t-i);
     end
 end
 
