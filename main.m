@@ -10,7 +10,6 @@ THICKseg = MakeSegments(samples);
 seg = FlattenSegments(THICKseg); 
 
 
-Quantizi
 for i = 1:1 %size(THICKseg,2)
     
     [a,p] = LevinsonDurbin( THICKseg(:,i) );
