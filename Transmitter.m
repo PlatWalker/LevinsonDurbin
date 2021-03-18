@@ -1,32 +1,29 @@
 clear;
 
-%%
+%% Audio read 
 
 Fs = 11025;
 numberOfSamplesToGet = [1,20*Fs];
 [samples,Fs1] = audioread('nagranie.wav', numberOfSamplesToGet, 'native');
 
+%% Algorithm and segmentation
+
 THICKseg = MakeSegments(samples);
 
-for i = 1:1 %size(THICKseg,2)
+for i = 1:size(THICKseg,2)
     
     seg = FlattenSegments( THICKseg(:,i) );
     
-    a = LevinsonDurbin( seg );
+    a(:,i) = LevinsonDurbin( seg )';
     
-    e = ErrorVector( a, seg );
+    e(:,i) = ErrorVector( a(:,i), seg );
+    
+    emax(i) = max(e(:,i));
+    quants = quantizeErorr( e(:,i), emax(i), 4 );
     
 end
 
-emax = max(e);
-
-quantStep = (emax - (-emax))/256 ;
-
-partition = -emax:quantStep:emax ;
-
-codebook = [-emax-quantStep partition];
-
-[ index, quants ] = quantiz( e', partition, codebook' );
+%% write to bin file
 
 fileWsp = fopen('Wsp.bin','w');
 fileEmax = fopen('emax.bin','w');
