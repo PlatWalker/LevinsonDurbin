@@ -28,7 +28,8 @@ codebook = [-emax-quantStep partition];
 
 [ index, quants ] = quantiz( e', partition, codebook' );
 
-
+fileID = fopen('nine.bin','w');
+fwrite(fileID,[1:9]);
 
 
 

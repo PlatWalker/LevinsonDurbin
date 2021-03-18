@@ -13,6 +13,7 @@ for i = 0:10
         p(i+matInd) = p(i+matInd) + seg(t)*seg(t-i);
     end
 end
+
 %% First step for i = 1
 
 a = zeros(10,10);
