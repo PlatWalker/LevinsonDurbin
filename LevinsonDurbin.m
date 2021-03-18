@@ -1,4 +1,4 @@
-function [ a , p ] = LevinsonDurbin( seg )
+function [ k , p ] = LevinsonDurbin( seg )
 
 N = 256;
 matInd = 1; % matlab indexing starts from 1... math starts indexing from 0. 
@@ -47,6 +47,7 @@ for i = 2:10
     s(i + matInd) = (1-k(i)^2) * s(i - 1 + matInd);
     
 end
+
 
 
 end

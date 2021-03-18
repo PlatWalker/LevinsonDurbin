@@ -28,12 +28,15 @@ codebook = [-emax-quantStep partition];
 
 [ index, quants ] = quantiz( e', partition, codebook' );
 
-
-
-
-
-
-
+fileWsp = fopen('Wsp.bin','w');
+fileEmax = fopen('emax.bin','w');
+fileQuants = fopen('quants.bin','w');
+fwrite(fileWsp,a);
+fwrite(fileEmax,emax);
+fwrite(fileQuants,quants);
+fclose(fileWsp);
+fclose(fileEmax);
+fclose(fileQuants);
 
 
 
