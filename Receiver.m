@@ -1,11 +1,45 @@
+%% read bin files
+
 fileWsp = fopen('Wsp.bin');
 fileEmax = fopen('emax.bin');
 fileQuants = fopen('quants.bin');
 
-kekWsp = fread(fileWsp, 'double');
+kekWsp = fread(fileWsp,[10 861], 'double');
 kekEmax = fread(fileEmax, 'double');
 kekQuants = fread(fileQuants, 'double');
 
 fclose(fileWsp);
 fclose(fileEmax);
 fclose(fileQuants);
+
+%% signal reconstruction
+
+y = zeros(220500,1);
+
+for i = 1:861
+    for k = 1:256
+        
+        x = 0;
+        for r = 1:10
+            
+            if k - r > 0
+                
+                x = x + a(r,i)*y(k-r);
+                
+            end
+            
+        end
+        
+        y((i-1)*k + k) = -x + e(k,i);
+        
+    end   
+end
+
+
+
+
+
+
+
+
+

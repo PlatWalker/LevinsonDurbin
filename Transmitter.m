@@ -13,7 +13,7 @@ numberOfSamplesToGet = [1,numberOfSecond*Fs];
 
 a = zeros(10, numberOfSegments );
 e = zeros(256, numberOfSegments );
-emax = zeros(1,numberOfSegments);
+emax = zeros(1, numberOfSegments );
 for i = 1:numberOfSegments
     
     seg = FlattenSegments( THICKseg(:,i) );
