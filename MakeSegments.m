@@ -1,4 +1,4 @@
-function [ seg ] = MakeSegments( sample )
+function [ seg, numberOfSegments ] = MakeSegments( sample )
 
 dzielnik = round(size(sample,1)/256);
 
@@ -9,6 +9,8 @@ for col = 1:dzielnik
     seg(:,col) = sample(1+246*(col-1):256+246*(col-1),1);
     
 end
+
+numberOfSegments = size(seg,2);
 
 end
 

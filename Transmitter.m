@@ -3,14 +3,18 @@ clear;
 %% Audio read 
 
 Fs = 11025;
-numberOfSamplesToGet = [1,20*Fs];
+numberOfSecond = 20;
+numberOfSamplesToGet = [1,numberOfSecond*Fs];
 [samples,Fs1] = audioread('nagranie.wav', numberOfSamplesToGet, 'native');
 
 %% Algorithm and segmentation
 
-THICKseg = MakeSegments(samples);
+[THICKseg, numberOfSegments] = MakeSegments(samples);
 
-for i = 1:size(THICKseg,2)
+a = zeros(10, numberOfSegments );
+e = zeros(256, numberOfSegments );
+emax = zeros(1,numberOfSegments);
+for i = 1:numberOfSegments
     
     seg = FlattenSegments( THICKseg(:,i) );
     
@@ -23,18 +27,18 @@ for i = 1:size(THICKseg,2)
     
 end
 
-%% write to bin file
+%% Write to bin file
 
-fileWsp = fopen('Wsp.bin','w');
-fileEmax = fopen('emax.bin','w');
-fileQuants = fopen('quants.bin','w');
-fwrite(fileWsp,a);
-fwrite(fileEmax,emax);
-fwrite(fileQuants,quants);
+fileWsp = fopen('Wsp.bin', 'w');
+fileEmax = fopen('emax.bin', 'w');
+fileQuants = fopen('quants.bin', 'w');
+fwrite(fileWsp, a, 'double');
+fwrite(fileEmax, emax,  'double');
+fwrite(fileQuants, quants, 'double');
 fclose(fileWsp);
 fclose(fileEmax);
 fclose(fileQuants);
 
-
+Receiver;
 
 
