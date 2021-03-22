@@ -4,15 +4,17 @@ fileWsp = fopen('Wsp.bin');
 fileEmax = fopen('emax.bin');
 fileQuants = fopen('quants.bin');
 
-kekWsp = fread(fileWsp, [10 861], 'double');
-kekEmax = fread(fileEmax, 'double');
-kekQuants = fread(fileQuants, [256 861], 'double');
+wsp = fread(fileWsp, [10 861], 'double');
+emaxR = fread(fileEmax, 'double');
+quantsR = fread(fileQuants, [256 861], format); % format is precision in which we write/read
 
 fclose(fileWsp);
 fclose(fileEmax);
 fclose(fileQuants);
 
 %% signal reconstruction
+
+quantizationLevel = (max(max(quantsR)) + 1); % read quantization level from data
 
 y = zeros(220500,1);
 
@@ -24,24 +26,34 @@ for i = 1:861
             
             if k - r > 0
                 
-                x = x + kekWsp(r,i)*y(k-r);
+                x = x + wsp(r,i)*y(k-r);
                 
             end
             
         end
         
-        y((i-1)*256 + k) = - x + kekQuants(k,i);
+        if quantsR(k,i) < quantizationLevel/2  
+            error = -((quantsR(k,i) * emaxR(i))/quantizationLevel/2);            
+        else
+            error = ((quantsR(k,i) * emaxR(i))/quantizationLevel/2);
+        end
+        
+        y((i-1)*256 + k) = - x + error;
         
     end   
 end
 
 y = int16(y);
-received = audioplayer(y, Fs1);
-audiowrite('odebrany.wav', y, Fs1);
+received = audioplayer(y, 11025);
+saveFormat = sprintf('received%d.wav', quantLevelGiven);
+audiowrite(saveFormat, y, 11025);
 
-%plot(1:220500, y, 1:220500, samples)
-
-
+plot(1:220500, y, 1:220500, samples)
+legend('recreated','orginal')
+xlabel('Sample[n]') 
+ylabel('Aplitude[dB]')
+xlim([1 220500])
+ylim([-10000 7000])
 
 
 

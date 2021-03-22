@@ -1,11 +1,15 @@
 clear;
 
+m = 2;
+quantLevelGiven = 2^m;
+format = sprintf('ubit%d', quantLevelGiven); % format is precision in which we write/read
+
 %% Audio read 
 
 Fs = 11025;
 numberOfSecond = 20;
 numberOfSamplesToGet = [1, numberOfSecond*Fs];
-[samples,Fs1] = audioread('nagranie.wav', numberOfSamplesToGet, 'native');
+[samples,Fs1] = audioread('record.wav', numberOfSamplesToGet, 'native');
 
 %% Algorithm and segmentation
 
@@ -24,19 +28,21 @@ for i = 1:numberOfSegments
     
     e(:,i) = ErrorVector( a(:,i), THICKseg(:,i) );
     
-    emax(i) = max(e(:,i));
-    quants(:,i) = quantizeErorr( e(:,i), emax(i), 16 ); % 4, 8, 16 bitowa kwantyzacja
+    emax(i) = max(abs(e(:,i)));
+    quants(:,i) = quantizeErorr( e(:,i), emax(i), quantLevelGiven );
     
 end
 
 %% Write to bin file
 
-fileWsp = fopen('Wsp.bin', 'w');
+fileWsp = fopen('wsp.bin', 'w');
 fileEmax = fopen('emax.bin', 'w');
 fileQuants = fopen('quants.bin', 'w');
+
 fwrite(fileWsp, a, 'double');
 fwrite(fileEmax, emax,  'double');
-fwrite(fileQuants, quants, 'double');
+fwrite(fileQuants, quants, format);
+
 fclose(fileWsp);
 fclose(fileEmax);
 fclose(fileQuants);
