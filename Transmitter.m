@@ -6,7 +6,6 @@ Fs = 11025;
 numberOfSecond = 20;
 numberOfSamplesToGet = [1, numberOfSecond*Fs];
 [samples,Fs1] = audioread('nagranie.wav', numberOfSamplesToGet, 'native');
-[samplesDouble,Fs2] = audioread('nagranie.wav', numberOfSamplesToGet);
 
 %% Algorithm and segmentation
 
@@ -15,6 +14,7 @@ numberOfSamplesToGet = [1, numberOfSecond*Fs];
 a = zeros(10, numberOfSegments );
 e = zeros(256, numberOfSegments );
 emax = zeros(1, numberOfSegments );
+quants = zeros(256, numberOfSegments);
 
 for i = 1:numberOfSegments
     
@@ -25,7 +25,7 @@ for i = 1:numberOfSegments
     e(:,i) = ErrorVector( a(:,i), THICKseg(:,i) );
     
     emax(i) = max(e(:,i));
-    quants = quantizeErorr( e(:,i), emax(i), 4 );
+    quants(:,i) = quantizeErorr( e(:,i), emax(i), 4 ); % 4, 8, 16 bitowa kwantyzacja
     
 end
 

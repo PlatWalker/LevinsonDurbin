@@ -4,9 +4,9 @@ fileWsp = fopen('Wsp.bin');
 fileEmax = fopen('emax.bin');
 fileQuants = fopen('quants.bin');
 
-kekWsp = fread(fileWsp,[10 861], 'double');
+kekWsp = fread(fileWsp, [10 861], 'double');
 kekEmax = fread(fileEmax, 'double');
-kekQuants = fread(fileQuants, 'double');
+kekQuants = fread(fileQuants, [256 861], 'double');
 
 fclose(fileWsp);
 fclose(fileEmax);
@@ -24,21 +24,22 @@ for i = 1:861
             
             if k - r > 0
                 
-                x = x + a(r,i)*y(k-r);
+                x = x + kekWsp(r,i)*y(k-r);
                 
             end
             
         end
         
-        y((i-1)*256 + k) = - x + e(k,i);
+        y((i-1)*256 + k) = - x + kekQuants(k,i);
         
     end   
 end
 
-received = audioplayer(y,Fs1,16);
-audiowrite('odebrany.wav',y,Fs1);
+y = int16(y);
+received = audioplayer(y, Fs1);
+audiowrite('odebrany.wav', y, Fs1);
 
-plot(1:220500, y, 1:220500, samplesDouble)
+%plot(1:220500, y, 1:220500, samples)
 
 
 
