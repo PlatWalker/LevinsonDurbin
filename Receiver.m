@@ -30,14 +30,15 @@ for i = 1:861
             
         end
         
-        y((i-1)*k + k) = -x + e(k,i);
+        y((i-1)*256 + k) = - x + e(k,i);
         
     end   
 end
 
+received = audioplayer(y,Fs1,16);
+audiowrite('odebrany.wav',y,Fs1);
 
-
-
+plot(1:220500, y, 1:220500, samplesDouble)
 
 
 
