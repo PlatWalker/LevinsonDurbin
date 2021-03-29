@@ -1,6 +1,6 @@
 clear;
 
-m = 2;
+m = 4;
 quantLevelGiven = 2^m;
 format = sprintf('ubit%d', quantLevelGiven); % format is precision in which we write/read
 
