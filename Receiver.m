@@ -19,6 +19,10 @@ quantizationLevel = (max(max(quantsR)) + 1); % read quantization level from data
 y = zeros(220500,1);
 
 for i = 1:861
+    
+    quantStep = (emaxR(i) - (-emaxR(i)))/(quantizationLevel-1);
+    partition = -emaxR(i):quantStep:emaxR(i);
+    
     for k = 1:256
         
         x = 0;
@@ -32,13 +36,7 @@ for i = 1:861
             
         end
         
-        if quantsR(k,i) < quantizationLevel/2  
-            error = -((quantsR(k,i) * emaxR(i))/quantizationLevel/2);            
-        else
-            error = ((quantsR(k,i) * emaxR(i))/quantizationLevel/2);
-        end
-        
-        y((i-1)*256 + k) = - x + error;
+        y((i-1)*256 + k) = - x + partition(quantsR(k,i) + 1);
         
     end   
 end
